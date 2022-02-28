@@ -36,7 +36,15 @@ services:
       # Home directory: sunshine state + configs
       - ${local_state}/:/home/retro/
       # OPTIONAL: host dbus used by avahi in order to publish Sunshine for auto network discovery
-      - ${DBUS}:/run/dbus:ro
+      - ${DBUS}:/run/dbus:ro 
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+        reservations:
+          cpus: '0.2'
+          memory: 256M
     ipc: ${SHARED_IPC}  # Needed for MIT-SHM, removing this should cause a performance hit see https://github.com/jessfraz/dockerfiles/issues/359
 
     env_file:
@@ -51,6 +59,21 @@ services:
       SUNSHINE_USER: ${SUNSHINE_USER}
       SUNSHINE_PASS: ${SUNSHINE_PASS}
       XDG_RUNTIME_DIR: /tmp/.X11-unix
+      VIRTUAL_PORT: ${VIRTUAL_PORT}
+      VIRTUAL_PROTO: ${VIRTUAL_PROTO}
+      VIRTUAL_HOST: ${VIRTUAL_HOST}
+      LETSENCRYPT_HOST: ${LETSENCRYPT_HOST}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
+      NETWORK: ${NETWORK}
+      NETWORK_ACCESS: ${NETWORK_ACCESS}
+    networks:
+      - external
 
 volumes:
   udev:
+
+networks:
+  external:
+    external: true
+    name: ${NETWORK}
+    
