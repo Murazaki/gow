@@ -38,6 +38,14 @@ services:
         tmpfs:
             size: ${SHM_SIZE}
     ipc: ${SHARED_IPC}  # Needed for MIT-SHM, removing this should cause a performance hit see https://github.com/jessfraz/dockerfiles/issues/359
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+          memory: 4G
+        reservations:
+          cpus: '0.2'
+          memory: 256M
 
     env_file:
       - config/common.env

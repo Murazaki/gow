@@ -39,6 +39,14 @@ services:
       - config/common.env
       - config/xorg.env
       # run-gow: gpu_env
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+          memory: 4G
+        reservations:
+          cpus: '0.2'
+          memory: 256M
 
     environment:
       # Which devices does GoW need to be able to use? The docker user will be
